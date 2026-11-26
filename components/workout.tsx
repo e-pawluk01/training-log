@@ -129,7 +129,6 @@ export function Workout({ who, plan, served, ghosts, reload }: Props) {
   const [sync, setSync] = useState<"busy" | "ok" | "fail">("ok");
   const [hold, setHold] = useState(false);
   const [hint, setHint] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [, tick] = useReducer((x: number) => x + 1, 0);
   const mainRef = useRef<HTMLButtonElement>(null), tbtnRef = useRef<HTMLButtonElement>(null), flashRef = useRef<HTMLDivElement>(null);
 
@@ -360,7 +359,7 @@ export function Workout({ who, plan, served, ghosts, reload }: Props) {
     </>);
   } else {
     content = (<>
-      <header className={`hdr ${scrolled ? "scrolled" : ""}`}>
+      <header className="hdr">
         <div className="top"><Dots plan={plan} cur={view.dayIndex} /></div>
         <h1>{day.t}</h1>
         <div className={`clockwrap ${on ? "on" : ""}`}><div><div className="clock">{session ? hms(Date.now() - session.startedAt) : "0:00"}</div></div></div>
@@ -380,7 +379,7 @@ export function Workout({ who, plan, served, ghosts, reload }: Props) {
   const w = sheet?.kind === "w" && session && day.x ? { it: day.x[sheet.i] as Lift, sets: session.items[sheet.i].sets!, ...sheet } : null;
 
   return (<>
-    <div className="app in" key={`${view.kind}-${view.dayIndex}`} data-view={view.kind} onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 4)}>
+    <div className="app in" key={`${view.kind}-${view.dayIndex}`} data-view={view.kind}>
       {content}
     </div>
     <div className="flash" ref={flashRef} />

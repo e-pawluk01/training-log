@@ -20,7 +20,7 @@
 }
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 body { margin: 0; }
-html, body { height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--bg); color: var(--fg); }
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; position: fixed; inset: 0; width: 100%; background: var(--bg); color: var(--fg); }
 body {
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
@@ -36,25 +36,19 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .app {
   max-width: 430px; margin: 0 auto; height: 100%; position: relative; box-sizing: border-box;
   display: flex; flex-direction: column;
-  overflow-y: auto; overscroll-behavior: none; scrollbar-width: none;
+  overflow-x: hidden; overflow-y: auto; overscroll-behavior: none; scrollbar-width: none; touch-action: pan-y;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 0 140px;
+  /* room for the iPhone status bar when opened from the Home Screen */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: 140px;
 }
 .app::-webkit-scrollbar { display: none; }
 .app[data-view="lock"], .app[data-view="rest"] { padding-block: 0 130px; }
 
 /* Header */
-.hdr {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))) calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
-  padding: 14px max(16px, env(safe-area-inset-right, 0px)) 14px max(16px, env(safe-area-inset-left, 0px));
-  background: rgba(0,0,0,.55);
-  -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px);
-  border-bottom: 1px solid transparent;
-  transition: border-color .3s;
-}
-.hdr.scrolled { border-bottom-color: var(--line); }
+/* The page never scrolls, so the header simply sits at the top. */
+.hdr { position: relative; z-index: 5; padding: 14px 0; }
 .top { display: flex; align-items: center; justify-content: space-between; height: 36px; }
 h1 { font: 700 34px/1.1 var(--disp); letter-spacing: -.022em; margin: 10px 0 0; text-wrap: balance; }
 
