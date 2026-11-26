@@ -1,13 +1,15 @@
-import { emailOf, isPerson, supabase } from "@/lib/person";
+import { isPerson, passwordOk, signInCookie, signOutCookie } from "@/lib/person";
 
-// Who + password → a Supabase session. The email is looked up here so it
-// never has to ship in the page.
+// Who + password → a signed cookie.
 export async function POST(req: Request) {
   const { who, password } = await req.json().catch(() => ({}));
-  const email = isPerson(who) ? emailOf(who) : undefined;
-  if (!email || typeof password !== "string" || !password) return Response.json({ error: "Invalid login credentials" }, { status: 401 });
-  const { data, error } = await supabase().auth.signInWithPassword({ email, password });
-  if (error || !data.session) return Response.json({ error: error?.message || "Invalid login credentials" }, { status: 401 });
-  const { access_token, refresh_token } = data.session;
-  return Response.json({ access_token, refresh_token });
+  if (!isPerson(who) || typeof password !== "string" || !passwordOk(who, password)) {
+    await new Promise((r) => setTimeout(r, 600));   // slow down guessing
+    return Response.json({ error: "Invalid login credentials" }, { status: 401 });
+  }
+  return Response.json({ ok: true }, { headers: { "Set-Cookie": signInCookie(who) } });
+}
+
+export async function DELETE() {
+  return Response.json({ ok: true }, { headers: { "Set-Cookie": signOutCookie() } });
 }

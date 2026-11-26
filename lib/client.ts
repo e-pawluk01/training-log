@@ -1,19 +1,6 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-
-// Browser side: the Supabase session (same accounts as OS) and a fetch that sends it.
-let sb: SupabaseClient | null = null;
-export const supa = () =>
-  (sb ??= createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "http://localhost", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "none"));
-
-export async function api(path: string, init?: RequestInit) {
-  const { data } = await supa().auth.getSession();
-  const token = data.session?.access_token;
-  return fetch(path, {
-    ...init,
-    cache: "no-store",
-    headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-  });
-}
+// Browser side: calls to this app's own API (the sign-in cookie goes along automatically).
+export const api = (path: string, init?: RequestInit) =>
+  fetch(path, { ...init, cache: "no-store", headers: { "Content-Type": "application/json" } });
 
 /* Per-viewer storage that survives a reload mid-workout. */
 export const load = <T,>(key: string, fallback: T): T => {

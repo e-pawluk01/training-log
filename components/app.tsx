@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { dayKey, type View } from "@/lib/cycle";
-import { api, load, save, supa } from "@/lib/client";
+import { api, load, save } from "@/lib/client";
 import type { Plan } from "@/lib/plans";
 import { Icon } from "./icon";
 import { Login } from "./login";
@@ -40,7 +40,7 @@ export function App() {
 
   useEffect(() => { reload(); }, [reload]);
 
-  const signOut = async () => { await supa().auth.signOut(); save(CACHE, {}); setData(null); setPhase("login"); };
+  const signOut = async () => { await api("/api/login", { method: "DELETE" }); save(CACHE, {}); setData(null); setPhase("login"); };
 
   if (phase === "boot") return <div className="boot"><i /></div>;
   if (phase === "login") return <Login onIn={() => { setPhase("boot"); reload(); }} />;

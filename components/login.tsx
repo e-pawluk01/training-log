@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supa } from "@/lib/client";
+import { api } from "@/lib/client";
 import { PEOPLE, PERSON_KEYS, type PersonKey } from "@/lib/plans";
 import { Icon } from "./icon";
 
@@ -18,11 +18,9 @@ export function Login({ onIn }: { onIn: () => void }) {
     setError(null);
     setBusy(true);
     try {
-      const res = await fetch("/api/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ who, password }) });
+      const res = await api("/api/login", { method: "POST", body: JSON.stringify({ who, password }) });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.error || "Could not sign in");
-      const { error } = await supa().auth.setSession(body);
-      if (error) throw error;
       onIn();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not sign in");
