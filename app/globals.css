@@ -19,6 +19,8 @@
   color-scheme: dark;
 }
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+*, *::before, *::after { box-sizing: inherit; }
+input { margin: 0; padding: 0; border-radius: 0; font: inherit; }
 body { margin: 0; }
 html, body { height: 100%; overflow: hidden; overscroll-behavior: none; position: fixed; inset: 0; width: 100%; background: var(--bg); color: var(--fg); }
 body {
@@ -37,8 +39,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   max-width: 430px; margin: 0 auto; height: 100%; position: relative; box-sizing: border-box;
   display: flex; flex-direction: column;
   overflow-x: hidden; overflow-y: auto; overscroll-behavior: none; scrollbar-width: none; touch-action: pan-y;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-left: max(12px, env(safe-area-inset-left, 0px));
+  padding-right: max(12px, env(safe-area-inset-right, 0px));
   /* room for the iPhone status bar when opened from the Home Screen */
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: 140px;
@@ -147,7 +149,7 @@ h1 { font: 700 34px/1.1 var(--disp); letter-spacing: -.022em; margin: 10px 0 0; 
 .dock {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
   display: flex; justify-content: center; pointer-events: none;
-  padding: 40px max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  padding: 40px max(12px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
   background: linear-gradient(180deg, transparent, rgba(0,0,0,.82) 55%);
 }
 .dock button { pointer-events: auto; }
@@ -263,7 +265,7 @@ h1 { font: 700 34px/1.1 var(--disp); letter-spacing: -.022em; margin: 10px 0 0; 
 
 /* Not set up / can't reach the log */
 .note { color: var(--mute); font: 500 15px/1.3 var(--sans); margin: 0; }
-.ghostbtn { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + 14px); width: 36px; height: 36px; border-radius: 18px; display: grid; place-items: center; color: var(--mute); background: var(--fill); border: 1px solid var(--line); }
+.ghostbtn { position: fixed; right: max(12px, env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + 14px); width: 36px; height: 36px; border-radius: 18px; display: grid; place-items: center; color: var(--mute); background: var(--fill); border: 1px solid var(--line); }
 .ghostbtn .ic { width: 17px; height: 17px; }
 .boot { position: fixed; inset: 0; display: grid; place-items: center; }
 .boot i { width: 6px; height: 6px; border-radius: 3px; background: var(--dim); animation: breathe 1.2s ease-in-out infinite; }
